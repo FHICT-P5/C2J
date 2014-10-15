@@ -169,7 +169,18 @@ public class Gezin implements java.io.Serializable {
         //todo opgave 1
         if(huwelijksdatum == null || scheidingsdatum != null)
         {
+            if (scheidingsdatum != null)
+            {
+                if (datum.after(scheidingsdatum))
+                {
+                    huwelijksdatum = datum;
+                    scheidingsdatum = null;
+                    return true;
+                }
+                return false;
+            }
             huwelijksdatum = datum;
+            scheidingsdatum = null;
             return true;
         }
         return false;

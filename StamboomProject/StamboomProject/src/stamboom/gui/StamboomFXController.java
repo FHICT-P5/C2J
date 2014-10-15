@@ -17,6 +17,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import stamboom.controller.StamboomController;
+import stamboom.domain.Geslacht;
 import stamboom.domain.Gezin;
 import stamboom.domain.Persoon;
 import stamboom.util.StringUtilities;
@@ -186,21 +187,15 @@ public class StamboomFXController extends StamboomController implements Initiali
         
         if (gezin != null)
         {
-            try
-            {
-                String dateString = tfHuwelijkInvoer1.getText();
-                DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
-                Date parsed = df.parse(dateString);
-                System.out.println("parsed date: " + parsed);
-
-                Calendar newCalendar = Calendar.getInstance();
-                newCalendar.setTime(parsed);
+            Calendar c = createCalendar(tfHuwelijkInvoer1.getText());
             
-                getAdministratie().setHuwelijk(gezin, newCalendar);
+            if (c != null)
+            {
+                getAdministratie().setHuwelijk(gezin, c);
             }
-            catch (Exception ex)
+            else
             {
-            
+                tfHuwelijkInvoer1.clear();
             }
         }
     }
@@ -211,34 +206,56 @@ public class StamboomFXController extends StamboomController implements Initiali
         
         if (gezin != null)
         {
-            try
-            {
-                String dateString = tfScheidingInvoer1.getText();
-                DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
-                Date parsed = df.parse(dateString);
-                System.out.println("parsed date: " + parsed);
-
-                Calendar newCalendar = Calendar.getInstance();
-                newCalendar.setTime(parsed);
+            Calendar c = createCalendar(tfScheidingInvoer1.getText());
             
-                getAdministratie().setScheiding(gezin, newCalendar);
+            if (c != null)
+            {
+                getAdministratie().setScheiding(gezin, c);
             }
-            catch (Exception ex)
+            else
             {
-            
+                tfScheidingInvoer1.clear();
             }
         }
     }
 
     public void cancelPersoonInvoer(Event evt) {
         // todo opgave 3
-
+        clearTabPersoonInvoer();
     }
 
     public void okPersoonInvoer(Event evt) {
         // todo opgave 3
+        stamboom.domain.Geslacht geslacht;
+        if (cbGeslacht.getValue() == "MAN")
+        {
+            geslacht = Geslacht.MAN;
+        }
+        else
+        {
+            geslacht = Geslacht.VROUW;
+        }
         
-
+        Calendar c = createCalendar(tfGebDatum1.getText());
+        
+        Gezin ouderlijkGezin = null;
+        
+        for (Gezin g : getAdministratie().getGezinnen())
+        {
+            if (g.toString() == cbOuderlijkGezin1.getValue())
+            {
+                ouderlijkGezin = g;
+            }
+        }
+        
+        if (c != null)
+        {
+            getAdministratie().addPersoon(geslacht, tfVoornamen1.getText().split(" "), tfAchternaam1.getText(), tfTussenvoegsel1.getText(), c, tfGebPlaats1.getText(), ouderlijkGezin);
+        }
+        else
+        {
+            tfGebDatum1.clear();
+        }
     }
 
     public void okGezinInvoer(Event evt) {
@@ -399,4 +416,23 @@ public class StamboomFXController extends StamboomController implements Initiali
         return (Stage) menuBar.getScene().getWindow();
     }
 
+    private Calendar createCalendar(String dateString)
+    {
+        Calendar c;
+        
+        try
+        {
+            DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+            Date parsed = df.parse(dateString);
+
+            c = Calendar.getInstance();
+            c.setTime(parsed);
+        }
+        catch (Exception ex)
+        {
+            c = null;
+        }
+        
+        return c;
+    }
 }

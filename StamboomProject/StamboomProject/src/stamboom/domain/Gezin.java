@@ -49,7 +49,7 @@ public class Gezin implements java.io.Serializable {
         this.huwelijksdatum = null;
         this.scheidingsdatum = null;
         
-        observableKinderen = FXCollections.observableList(kinderen);
+        this.observableKinderen = FXCollections.observableList(kinderen);
     }
 
     // ********methoden*****************************************
@@ -58,6 +58,11 @@ public class Gezin implements java.io.Serializable {
      */
     public List<Persoon> getKinderen() {
         return (List<Persoon>) Collections.unmodifiableList(kinderen);
+    }
+    
+    public ObservableList<Persoon> getObservableKinderen()
+    {
+        return this.observableKinderen;
     }
 
     /**

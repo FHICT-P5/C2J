@@ -22,6 +22,12 @@ public class Persoon implements java.io.Serializable {
     
     private transient ObservableList<Gezin> observableBetrokken;
 
+    
+    public ObservableList<Gezin> getObservableBetrokken()
+    {
+        return this.observableBetrokken;
+    }
+    
     // ********constructoren***********************************
     /**
      * er wordt een persoon gecreeerd met persoonsnummer persNr en met als

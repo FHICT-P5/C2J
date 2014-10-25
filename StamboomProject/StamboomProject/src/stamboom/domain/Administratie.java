@@ -25,25 +25,7 @@ public class Administratie implements java.io.Serializable {
     public Administratie() {
         //todo opgave 1
         personen = new ArrayList<>();
-        gezinnen = new ArrayList<>();
-               
-        this.addPersoon(Geslacht.MAN, new String[]{"Piet", "Franciscus"}, "Swinkels",
-                "", new GregorianCalendar(1950, Calendar.APRIL, 23), "ede", null);
-        this.addPersoon(Geslacht.MAN, new String[]{"Henk", "Franciscus"}, "Swinkels",
-                "", new GregorianCalendar(1950, Calendar.APRIL, 23), "ede", null);
-        
-        this.addPersoon(Geslacht.MAN, new String[]{"Kind1", "Franciscus"}, "Swinkels",
-                "", new GregorianCalendar(1955, Calendar.APRIL, 23), "ede", null);
-        this.addPersoon(Geslacht.MAN, new String[]{"Kind2", "Franciscus"}, "Swinkels",
-                "", new GregorianCalendar(1956, Calendar.APRIL, 23), "ede", null);
-        
-        
-        this.addOngehuwdGezin(personen.get(0), personen.get(1));
-        
-        gezinnen.get(0).setHuwelijk(new GregorianCalendar(1951, Calendar.APRIL, 23));
-        //gezinnen.get(0).setScheiding(new GregorianCalendar(1952, Calendar.APRIL, 23));
-        gezinnen.get(0).breidUitMet(personen.get(2));
-        gezinnen.get(0).breidUitMet(personen.get(3));
+        gezinnen = new ArrayList<>();     
         
         geslachten = new ArrayList<>();
         
@@ -342,7 +324,7 @@ public class Administratie implements java.io.Serializable {
      * @return het aantal geregistreerde personen
      */
     public int aantalGeregistreerdePersonen() {
-        return nextPersNr - 1;
+        return personen.size();
     }
 
     /**
@@ -350,7 +332,7 @@ public class Administratie implements java.io.Serializable {
      * @return het aantal geregistreerde gezinnen
      */
     public int aantalGeregistreerdeGezinnen() {
-        return nextGezinsNr - 1;
+        return gezinnen.size();
     }
 
     /**

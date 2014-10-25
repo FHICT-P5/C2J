@@ -4,6 +4,8 @@
  */
 package stamboom.gui;
 
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -15,6 +17,7 @@ import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import stamboom.controller.StamboomController;
 import stamboom.domain.Geslacht;
@@ -315,13 +318,36 @@ public class StamboomFXController extends StamboomController implements Initiali
     
     public void openStamboom(Event evt) {
         // todo opgave 3
-       
+        FileChooser fc = new FileChooser();
+        File stamboom = fc.showOpenDialog(null);
+        
+        try
+        {
+            deserialize(stamboom);
+        }
+        catch (IOException ex)
+        {
+            System.out.println("Couldn't open file.");
+        }
     }
 
     
     public void saveStamboom(Event evt) {
         // todo opgave 3
-       
+        
+        File stamboom = new File("Stamboom");
+        if(stamboom.exists())
+        {
+            stamboom.delete();
+        }
+        try
+        {
+            serialize(stamboom);
+        }
+        catch (IOException ex)
+        {
+            System.out.println("Couldn't save file.");
+        }
     }
 
     

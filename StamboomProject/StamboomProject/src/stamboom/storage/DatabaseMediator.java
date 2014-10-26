@@ -42,7 +42,7 @@ public class DatabaseMediator implements IStorageMediator {
         {
             //Get Personen
             Statement getPersonen = conn.createStatement();
-            ResultSet rsPersonen = getPersonen.executeQuery("SELECT * FROM personen");
+            ResultSet rsPersonen = getPersonen.executeQuery("SELECT * FROM personen ORDER BY persoonsNummer");
         
             List<Persoon> personenMetOuders = new ArrayList();
             List<Integer> oudersNummers = new ArrayList();

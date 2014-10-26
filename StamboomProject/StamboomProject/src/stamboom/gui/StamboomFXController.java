@@ -262,6 +262,9 @@ public class StamboomFXController extends StamboomController implements Initiali
         {
             tfGebDatum1.clear();
         }
+        
+        clearTabPersoonInvoer();
+        initComboboxes();
     }
 
     public void okGezinInvoer(Event evt) {
@@ -300,6 +303,7 @@ public class StamboomFXController extends StamboomController implements Initiali
         }
 
         clearTabGezinInvoer();
+        initComboboxes();
     }
 
     public void cancelGezinInvoer(Event evt) {

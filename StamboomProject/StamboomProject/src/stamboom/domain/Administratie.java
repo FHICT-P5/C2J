@@ -138,7 +138,8 @@ public class Administratie implements java.io.Serializable {
            gebplaats = gebplaats.substring(0, 1).toUpperCase();
         }
         
-        tvoegsel = tvoegsel.toLowerCase();
+        if(tvoegsel != null)
+            tvoegsel = tvoegsel.toLowerCase();
         
         Persoon persoon = new Persoon(nextPersNr, vnamen, anaam, tvoegsel, gebdat, gebplaats, geslacht, ouderlijkGezin);
         

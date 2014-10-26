@@ -104,6 +104,11 @@ public class StamboomFXController extends StamboomController implements Initiali
     private void initComboboxes() {
         //todo opgave 3 
         this.getAdministratie().addPersoon(Geslacht.MAN, new String[] {"test1"}, "achternaam", "van", new GregorianCalendar(1990, 1, 1), "Eindhoven", null);
+        this.getAdministratie().addPersoon(Geslacht.MAN, new String[] {"Piet", "Jan"}, "Paulusma", "", new GregorianCalendar(1990, 1, 1), "Leeuwarden", null);
+        this.getAdministratie().addPersoon(Geslacht.VROUW, new String[] {"Marij", "Gerda"}, "Paulusma", "", new GregorianCalendar(1990, 1, 1), "Leeuwarden", null);
+        this.getAdministratie().addPersoon(Geslacht.MAN, new String[] {"Peter", "Nico"}, "Paulusma", "", new GregorianCalendar(1995, 1, 1), "Leeuwarden", null);
+        this.getAdministratie().addPersoon(Geslacht.VROUW, new String[] {"Anne", "Nico"}, "Klaassen", "", new GregorianCalendar(1995, 1, 1), "Venlo", null);
+        this.getAdministratie().addPersoon(Geslacht.MAN, new String[] {"Mega", "Mindy"}, "Janssen", "", new GregorianCalendar(2005, 1, 1), "Amsterdam", null);
         
         cbPersonen.setItems(this.getAdministratie().getObservablePersonen());
         cbGezinnen.setItems(this.getAdministratie().getObservableGezinnen());
@@ -308,12 +313,16 @@ public class StamboomFXController extends StamboomController implements Initiali
             if (g == null) {
                 showDialog("Warning", "Invoer huwelijk is niet geaccepteerd");
             } else {
-                Calendar scheidingsdatum;
+                Calendar scheidingsdatum = null;
                 try {
                     scheidingsdatum = StringUtilities.datum(tfScheidingInvoer.getText());
-                    getAdministratie().setScheiding(g, scheidingsdatum);
                 } catch (IllegalArgumentException exc) {
                     showDialog("Warning", "scheidingsdatum :" + exc.getMessage());
+                }
+                
+                if(scheidingsdatum != null)
+                {
+                    getAdministratie().setScheiding(g, scheidingsdatum);
                 }
             }
         } else {

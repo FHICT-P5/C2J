@@ -272,7 +272,12 @@ public class StamboomFXController extends StamboomController implements Initiali
             
             String[] voornamen = voornamenList.toArray(new String[voornamenList.size()]);
             
-            getAdministratie().addPersoon(geslacht, voornamen, tfAchternaam1.getText(), tfTussenvoegsel1.getText(), c, tfGebPlaats1.getText(), ouderlijkGezin);
+            Persoon testPersoon = getAdministratie().addPersoon(geslacht, voornamen, tfAchternaam1.getText(), tfTussenvoegsel1.getText(), c, tfGebPlaats1.getText(), ouderlijkGezin);
+            
+            if (testPersoon != null)
+            {
+                System.out.println("Nieuw persoon: "+ testPersoon.toString());
+            }
         }
         else
         {

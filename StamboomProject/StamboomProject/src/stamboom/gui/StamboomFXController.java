@@ -38,10 +38,12 @@ public class StamboomFXController extends StamboomController implements Initiali
     @FXML MenuItem miSave;
     @FXML CheckMenuItem cmDatabase;
     @FXML MenuItem miClose;
+    @FXML TabPane myTabs;
     @FXML Tab tabPersoon;
     @FXML Tab tabGezin;
     @FXML Tab tabPersoonInvoer;
     @FXML Tab tabGezinInvoer;
+    @FXML Tab tabStamboom;
 
     //PERSOON
     @FXML ComboBox cbPersonen;
@@ -83,6 +85,9 @@ public class StamboomFXController extends StamboomController implements Initiali
     @FXML ComboBox cbOuderlijkGezin1;
     @FXML Button btOKPersoonInvoer;
     @FXML Button btCancelPersoonInvoer;
+    
+    //STAMBOOM
+    @FXML TextArea stamboomText;
 
     //opgave 4
     private boolean withDatabase;
@@ -102,8 +107,6 @@ public class StamboomFXController extends StamboomController implements Initiali
         cbOuder2Invoer.setItems(this.getAdministratie().getObservablePersonen());
         cbOuderlijkGezin1.setItems(this.getAdministratie().getObservableGezinnen());
         cbGeslacht.setItems(this.getAdministratie().getObservableGeslachten());
-        
-        
     }
 
     public void selectPersoon(Event evt) {
@@ -306,7 +309,13 @@ public class StamboomFXController extends StamboomController implements Initiali
     
     public void showStamboom(Event evt) {
         // todo opgave 3
+        Persoon persoon = (Persoon) cbPersonen.getSelectionModel().getSelectedItem();
         
+        if (persoon != null)
+        {
+            myTabs.getSelectionModel().select(tabStamboom);
+            stamboomText.setText(persoon.stamboomAlsString());
+        }
     }
 
     public void createEmptyStamboom(Event evt) {

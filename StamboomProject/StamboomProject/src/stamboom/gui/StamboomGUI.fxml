@@ -35,7 +35,7 @@
         </MenuBar>
       </top>
          <bottom>
-        <TabPane prefHeight="252.0" prefWidth="500.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+        <TabPane prefHeight="252.0" prefWidth="500.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER" fx:id="myTabs">
           <tabs>
                   <Tab fx:id="tabGezin" onSelectionChanged="#selectTab" text="Gezin">
                      <content>
@@ -269,9 +269,12 @@
                 </SplitPane>
               </content>
             </Tab>
-                  <Tab text="Stamboom">
+                  <Tab fx:id="tabStamboom" text="Stamboom">
                     <content>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                      <TextArea fx:id="stamboomText">
+                          
+                      </TextArea>
                     </content>
                   </Tab>
           </tabs>

@@ -36,7 +36,7 @@ public class Administratie implements java.io.Serializable {
         
         observablePersonen = FXCollections.observableList(personen);
         observableGezinnen = FXCollections.observableList(gezinnen);
-        observableGeslachten = FXCollections.observableArrayList();
+        observableGeslachten = FXCollections.observableList(geslachten);
         
         nextGezinsNr = 1;
         nextPersNr = 1;

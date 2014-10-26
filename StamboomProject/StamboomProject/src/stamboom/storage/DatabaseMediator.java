@@ -7,12 +7,18 @@ package stamboom.storage;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 import java.util.Properties;
 import stamboom.domain.Administratie;
+import stamboom.domain.Geslacht;
 import stamboom.domain.Gezin;
 import stamboom.domain.Persoon;
+import stamboom.util.StringUtilities;
 
 public class DatabaseMediator implements IStorageMediator {
 
@@ -23,7 +29,99 @@ public class DatabaseMediator implements IStorageMediator {
     @Override
     public Administratie load() throws IOException {
         //todo opgave 4
-        return null;
+        Administratie loadAdmin = new Administratie();
+        
+        try
+        {
+            //Get Personen
+            Statement getPersonen = conn.createStatement();
+            ResultSet rsPersonen = getPersonen.executeQuery("SELECT * FROM personen");
+        
+            List<Persoon> personenMetOuders = new ArrayList();
+            List<int> oudersNummers = new ArrayList();
+            
+            //Read personen
+            while(rsPersonen.next())
+            {         
+                String achternaam = rsPersonen.getString("");
+                
+                List<String> voornamenList = new ArrayList();
+                for (String voornaam : rsPersonen.getString("voornamen").trim().split(" "))
+                {
+                    if (voornaam.trim().length()> 0)
+                    {
+                        voornamenList.add(voornaam);
+                    }
+                }
+                
+                String[] voornamen = voornamenList.toArray(new String[voornamenList.size()]);
+                
+                String tussenvoegsel = rsPersonen.getString("tussenvoegsel");
+                Calendar geboortedatum = StringUtilities.datum(rsPersonen.getString("geboortedatum"));
+                String geboorteplaats = rsPersonen.getString("geboorteplaats");
+                Geslacht geslacht = Geslacht.valueOf(rsPersonen.getString("geslacht"));
+                
+                Persoon p = loadAdmin.addPersoon(geslacht, voornamen, achternaam, tussenvoegsel, geboortedatum, geboorteplaats, null);
+                
+                //Add ouderlijkGezinNr to list, so it can be added to persoon later
+                int ouderlijkGezinNr = rsPersonen.getInt("ouder");
+                if (p != null)
+                {
+                    personenMetOuders.add(p);
+                    oudersNummers.add(ouderlijkGezinNr);
+                }
+            }
+            
+            //Get Gezinnen
+            Statement getGezinnen = conn.createStatement();
+            ResultSet rsGezinnen = getGezinnen.executeQuery("SELECT * FROM gezinnen");
+                   
+            //Read personen
+            while(rsGezinnen.next())
+            {
+                Persoon ouder1 = loadAdmin.getPersoon(rsGezinnen.getInt("ouder1"));
+                
+                Persoon ouder2 = null;
+                
+                if (rsGezinnen.getString("ouder2") != null)
+                {
+                    ouder2 = loadAdmin.getPersoon(rsGezinnen.getInt("ouder2"));
+                }
+                
+                Calendar huwelijksdatum  = null;
+                Calendar scheidingsdatum = null;
+                
+                String huwelijksdatumString = rsGezinnen.getString("huwelijksdatum");
+                String scheidingsdatumString = rsGezinnen.getString("scheidingsdatum");
+                
+                if (huwelijksdatumString != null)
+                {
+                    huwelijksdatum = StringUtilities.datum(huwelijksdatumString);
+                }
+                
+                if (scheidingsdatumString != null)
+                {
+                    scheidingsdatum = StringUtilities.datum(scheidingsdatumString);
+                }
+                
+                Gezin g = null;
+                
+                if (huwelijksdatum != null)
+                {
+                    g = loadAdmin.addHuwelijk(ouder1, ouder2, huwelijksdatum);
+                }
+                else
+                {
+                    g = loadAdmin.addOngehuwdGezin(ouder1, ouder2);
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            System.out.println("Exception: " + ex.getMessage());
+        }
+       
+        return loadAdmin;
     }
 
     @Override

@@ -5,10 +5,12 @@
 package stamboom.controller;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import stamboom.domain.Administratie;
 import stamboom.storage.IStorageMediator;
 import java.util.Properties;
+import stamboom.storage.DatabaseMediator;
 
 public class StamboomController {
 
@@ -96,13 +98,13 @@ public class StamboomController {
     
     // opgave 4
     private void initDatabaseMedium() throws IOException {
-//        if (!(storageMediator instanceof DatabaseMediator)) {
-//            Properties props = new Properties();
-//            try (FileInputStream in = new FileInputStream("database.properties")) {
-//                props.load(in);
-//            }
-//            storageMediator = new DatabaseMediator(props);
-//        }
+        if (!(storageMediator instanceof DatabaseMediator)) {
+            Properties props = new Properties();
+            try (FileInputStream in = new FileInputStream("database.properties")) {
+                props.load(in);
+            }
+            storageMediator = new DatabaseMediator(props);
+        }
     }
     
     /**
@@ -112,6 +114,8 @@ public class StamboomController {
      */
     public void loadFromDatabase() throws IOException {
         //todo opgave 4
+        this.initDatabaseMedium();
+        this.admin = this.storageMediator.load();
     }
 
     /**
@@ -121,6 +125,8 @@ public class StamboomController {
      */
     public void saveToDatabase() throws IOException {
         //todo opgave 4
+        this.initDatabaseMedium();
+        this.storageMediator.save(this.admin);
     }
 
 }

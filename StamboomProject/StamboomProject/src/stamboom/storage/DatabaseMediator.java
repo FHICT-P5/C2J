@@ -25,6 +25,13 @@ public class DatabaseMediator implements IStorageMediator {
     private Properties props;
     private Connection conn;
 
+    public DatabaseMediator(Properties props)
+    {
+        this.conn = null;
+        this.props = props;
+        this.configure(this.props);
+    }
+    
     
     @Override
     public Administratie load() throws IOException {
@@ -38,7 +45,7 @@ public class DatabaseMediator implements IStorageMediator {
             ResultSet rsPersonen = getPersonen.executeQuery("SELECT * FROM personen");
         
             List<Persoon> personenMetOuders = new ArrayList();
-            List<int> oudersNummers = new ArrayList();
+            List<Integer> oudersNummers = new ArrayList();
             
             //Read personen
             while(rsPersonen.next())
@@ -106,19 +113,36 @@ public class DatabaseMediator implements IStorageMediator {
                 
                 Gezin g = null;
                 
-                if (huwelijksdatum != null)
+                g = loadAdmin.addOngehuwdGezin(ouder1, ouder2);
+                
+                if (g != null && huwelijksdatum != null)
                 {
-                    g = loadAdmin.addHuwelijk(ouder1, ouder2, huwelijksdatum);
+                    loadAdmin.setHuwelijk(g, huwelijksdatum);
+                    
+                    if (scheidingsdatum != null)
+                    {
+                        loadAdmin.setScheiding(g, scheidingsdatum);
+                    }
                 }
-                else
+            }
+            
+            //Add ouderlijkGezin to Personen
+            for (Persoon p : personenMetOuders)
+            {
+                if (p != null)
                 {
-                    g = loadAdmin.addOngehuwdGezin(ouder1, ouder2);
+                    Gezin ouderlijkGezin = loadAdmin.getGezin(oudersNummers.indexOf(p));
+                    if (ouderlijkGezin != null)
+                    {
+                        loadAdmin.setOuders(p, ouderlijkGezin);
+                    }
                 }
             }
         }
-        catch (Exception ex)
+        catch (SQLException ex)
         {
             System.out.println("Exception: " + ex.getMessage());
+            throw new IOException();
         }
        
         return loadAdmin;
@@ -219,9 +243,10 @@ public class DatabaseMediator implements IStorageMediator {
             }
             
         }
-        catch(Exception ex)
+        catch(SQLException ex)
         {
             System.out.println("Exception: " + ex.getMessage());
+            throw new IOException();
         }
     }
 

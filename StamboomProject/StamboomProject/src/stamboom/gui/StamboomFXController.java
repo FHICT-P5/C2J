@@ -9,8 +9,11 @@ import java.io.IOException;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.event.Event;
@@ -100,6 +103,8 @@ public class StamboomFXController extends StamboomController implements Initiali
 
     private void initComboboxes() {
         //todo opgave 3 
+        this.getAdministratie().addPersoon(Geslacht.MAN, new String[] {"test1"}, "achternaam", "van", new GregorianCalendar(1990, 1, 1), "Eindhoven", null);
+        
         cbPersonen.setItems(this.getAdministratie().getObservablePersonen());
         cbGezinnen.setItems(this.getAdministratie().getObservableGezinnen());
         cbOuderlijkGezin.setItems(this.getAdministratie().getObservableGezinnen());
@@ -256,7 +261,18 @@ public class StamboomFXController extends StamboomController implements Initiali
         
         if (c != null)
         {
-            getAdministratie().addPersoon(geslacht, tfVoornamen1.getText().split(" "), tfAchternaam1.getText(), tfTussenvoegsel1.getText(), c, tfGebPlaats1.getText(), ouderlijkGezin);
+            List<String> voornamenList = new ArrayList();
+            for(String voornaam : tfVoornamen1.getText().trim().split(" "))
+            {
+                if (voornaam.trim().length() > 0)
+                {
+                    voornamenList.add(voornaam);
+                }
+            }
+            
+            String[] voornamen = voornamenList.toArray(new String[voornamenList.size()]);
+            
+            getAdministratie().addPersoon(geslacht, voornamen, tfAchternaam1.getText(), tfTussenvoegsel1.getText(), c, tfGebPlaats1.getText(), ouderlijkGezin);
         }
         else
         {

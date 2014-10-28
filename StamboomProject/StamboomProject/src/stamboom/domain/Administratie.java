@@ -56,6 +56,13 @@ public class Administratie implements java.io.Serializable {
     {
         return this.observableGeslachten;
     }
+    
+    public void UpdateObservableLists()
+    {
+        observablePersonen = FXCollections.observableList(personen);
+        observableGezinnen = FXCollections.observableList(gezinnen);
+        observableGeslachten = FXCollections.observableList(geslachten);
+    }
 
     //**********************methoden****************************************
     /**

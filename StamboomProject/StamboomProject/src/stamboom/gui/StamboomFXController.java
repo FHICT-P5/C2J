@@ -295,6 +295,7 @@ public class StamboomFXController extends StamboomController implements Initiali
         }
         
         clearTabPersoonInvoer();
+        getAdministratie().UpdateObservableLists();
         initComboboxes();
     }
 
@@ -338,6 +339,7 @@ public class StamboomFXController extends StamboomController implements Initiali
         }
 
         clearTabGezinInvoer();
+        getAdministratie().UpdateObservableLists();
         initComboboxes();
     }
 

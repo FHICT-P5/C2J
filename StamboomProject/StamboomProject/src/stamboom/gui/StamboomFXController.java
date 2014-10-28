@@ -103,18 +103,6 @@ public class StamboomFXController extends StamboomController implements Initiali
 
     private void initComboboxes() {
         //todo opgave 3 
-        Persoon p3 = this.getAdministratie().addPersoon(Geslacht.MAN, new String[] {"Klaas"}, "Janssen", "", new GregorianCalendar(1990, 1, 1), "Eindhoven", null);
-        this.getAdministratie().addPersoon(Geslacht.MAN, new String[] {"Piet", "Jan"}, "Paulusma", "", new GregorianCalendar(1990, 1, 1), "Leeuwarden", null);
-        this.getAdministratie().addPersoon(Geslacht.VROUW, new String[] {"Marij", "Gerda"}, "Paulusma", "", new GregorianCalendar(1990, 1, 1), "Leeuwarden", null);
-        this.getAdministratie().addPersoon(Geslacht.MAN, new String[] {"Peter", "Nico"}, "Paulusma", "", new GregorianCalendar(1995, 1, 1), "Leeuwarden", null);
-        Persoon p1 = this.getAdministratie().addPersoon(Geslacht.VROUW, new String[] {"Anne", "Nico"}, "Klaassen", "", new GregorianCalendar(1965, 1, 1), "Venlo", null);
-        Persoon p2 = this.getAdministratie().addPersoon(Geslacht.MAN, new String[] {"Mega", "Mindy"}, "Janssen", "", new GregorianCalendar(1963, 1, 1), "Amsterdam", null);
-        
-        Gezin g1 = this.getAdministratie().addOngehuwdGezin(p1, p2);
-        this.getAdministratie().setOuders(p3, g1);
-        
-        
-        
         cbPersonen.setItems(this.getAdministratie().getObservablePersonen());
         cbGezinnen.setItems(this.getAdministratie().getObservableGezinnen());
         cbOuderlijkGezin.setItems(this.getAdministratie().getObservableGezinnen());
@@ -379,6 +367,8 @@ public class StamboomFXController extends StamboomController implements Initiali
         {
             System.out.println("Couldn't open file.");
         }
+        getAdministratie().UpdateObservableLists();
+        initComboboxes();
     }
 
     
@@ -398,6 +388,7 @@ public class StamboomFXController extends StamboomController implements Initiali
         {
             System.out.println("Couldn't save file.");
         }
+        System.out.println("Stamboom saved.");
     }
 
     

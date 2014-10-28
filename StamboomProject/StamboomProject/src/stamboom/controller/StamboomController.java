@@ -56,10 +56,13 @@ public class StamboomController {
             
             fileOutput.close();
             
-            //Properties props = new Properties();
-            //props.setProperty("file", bestand.getAbsolutePath());
-            //storageMediator.configure(props);
-            //storageMediator.save(admin);
+            /*
+            System.out.println(bestand.getAbsolutePath());
+            Properties props = new Properties();
+            props.setProperty("file", bestand.getAbsolutePath());
+            storageMediator.configure(props);
+            storageMediator.save(admin);
+            */
         }
         catch (Exception ex)
         {
@@ -85,10 +88,12 @@ public class StamboomController {
             
             fileInput.close();
             
-            //Properties props = new Properties();
-            //props.setProperty("file", bestand.getPath());
-            //storageMediator.configure(props);
-            //this.admin = storageMediator.load();
+            /*
+            Properties props = new Properties();
+            props.setProperty("file", bestand.getPath());
+            storageMediator.configure(props);
+            this.admin = storageMediator.load();
+            */
         }
         catch (Exception ex)
         {

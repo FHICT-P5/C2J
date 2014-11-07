@@ -38,8 +38,11 @@ public class DatabaseMediator implements IStorageMediator {
         //todo opgave 4
         Administratie loadAdmin = new Administratie();
         
+        
+        
         try
         {
+            this.initConnection();
             //Get Personen
             Statement getPersonen = conn.createStatement();
             ResultSet rsPersonen = getPersonen.executeQuery("SELECT * FROM personen ORDER BY persoonsNummer");
@@ -293,15 +296,17 @@ public class DatabaseMediator implements IStorageMediator {
 
     private void initConnection() throws SQLException {
         //opgave 4
-        String url = "";
-        String username = "";
-        String password = "";
+        String url = "jdbc:mysql://localhost:3306/?user=root";
+        String username = "root";
+        String password = "Lomm1994";
         
         try
         {
+            /*
             url = this.props.getProperty(url);
             username = this.props.getProperty(username);
             password = this.props.getProperty(password);
+                    */
             
             if (!url.equals("") && !username.equals("") && !password.equals(""))
             {

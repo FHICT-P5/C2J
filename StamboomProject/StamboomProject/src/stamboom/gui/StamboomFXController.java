@@ -98,7 +98,8 @@ public class StamboomFXController extends StamboomController implements Initiali
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         initComboboxes();
-        withDatabase = false;
+        withDatabase = true;
+        this.createEmptyStamboom(null);
     }
 
     private void initComboboxes() {
@@ -356,16 +357,30 @@ public class StamboomFXController extends StamboomController implements Initiali
     
     public void openStamboom(Event evt) {
         // todo opgave 3
-        FileChooser fc = new FileChooser();
-        File stamboom = fc.showOpenDialog(null);
-        
-        try
+        if(!withDatabase)
         {
-            deserialize(stamboom);
+            FileChooser fc = new FileChooser();
+            File stamboom = fc.showOpenDialog(null);
+
+            try
+            {
+                deserialize(stamboom);
+            }
+            catch (IOException ex)
+            {
+                System.out.println("Couldn't open file.");
+            }
         }
-        catch (IOException ex)
+        else
         {
-            System.out.println("Couldn't open file.");
+            try
+            {
+                super.loadFromDatabase();
+            }
+            catch(Exception ex)
+            {
+                
+            }
         }
         getAdministratie().UpdateObservableLists();
         initComboboxes();
@@ -374,21 +389,34 @@ public class StamboomFXController extends StamboomController implements Initiali
     
     public void saveStamboom(Event evt) {
         // todo opgave 3
-        
-        File stamboom = new File("Stamboom");
-        if(stamboom.exists())
+        if(!withDatabase)
         {
-            stamboom.delete();
+            File stamboom = new File("Stamboom");
+            if(stamboom.exists())
+            {
+                stamboom.delete();
+            }
+            try
+            {
+                serialize(stamboom);
+            }
+            catch (IOException ex)
+            {
+                System.out.println("Couldn't save file.");
+            }
+            System.out.println("Stamboom saved.");
         }
-        try
+        else
         {
-            serialize(stamboom);
+            try
+            {
+                super.saveToDatabase();
+            }
+            catch(IOException ex)
+            {
+                System.out.println(ex.getMessage());
+            }
         }
-        catch (IOException ex)
-        {
-            System.out.println("Couldn't save file.");
-        }
-        System.out.println("Stamboom saved.");
     }
 
     
